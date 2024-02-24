@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=no">
+    <title>Réservations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            user-zoom: none; /* Empêche le zoom de l'utilisateur */
+            touch-action: none; /* Empêche les gestes de zoom */
+        }
+      
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 120px;
+        }
+         h5 {
+           
+            color: #ff8000;
+           
+        }
+
+        .reservations-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .reservation {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px; /* Modification de la largeur maximale */
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .reservation:hover {
+            transform: translateY(-5px);
+        }
+
+        .reservation h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .reservation p {
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .reservation .details {
+            font-weight: bold;
+            color: #444;
+        }
+
+        .reservation .details span {
+            color: #888;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+         .reservation .details span.orange {
+            color: orange; /* Définition de la couleur orange pour la classe "orange" */
+        }
+
+        .button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button.confirm {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        .button.confirm:hover {
+            background-color: #45a049;
+        }
+
+        .button.reject {
+            background-color: #f44336;
+            color: #fff;
+        }
+
+        .button.reject:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+    </style>
+    <script>
+        function sendReservationAction(action, reservationId) {
+            fetch(`/${action}-reservation`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ reservationId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                })
+                .catch(error => {
+                    console.error('Error sending reservation action:', error);
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Liste des réservations</h1>
+
+    {{#each reservations}}
+        <div class="reservation">
+            <div class="details">
+                <p><strong><span class="orange">Genre:</span> <br></strong> {{gender}}</p>
+                <p><strong><span class="orange">Nombre de clients:</span> <br></strong> {{NombreCli}}</p>
+                <p><strong><span class="orange">D/H RDV:</span> <br></strong> {{rdvHD}}</p>
+                <p><strong><span class="orange">Service:</span> <br></strong> {{Service}}</p>
+            </div>
+            <div class="buttons">
+                <button class="button confirm" onclick="sendReservationAction('confirm', '{{_id}}')">Confirmer</button>
+                <button class="button reject" onclick="sendReservationAction('reject', '{{_id}}')">Rejeter</button>
+            </div>
+        </div>
+    {{/each}}
+</body>
+</html>
+
+
